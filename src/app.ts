@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import express, { Request, Response } from 'express'
-import BikesRouter from './module/Products/Bikes.route'
-import OrderRouter from './module/Orders/Order.route'
+import blogRouter from './module/Blog/blog.routes'
 const app = express()
 
 // middleware
 app.use(express.json())
 
-app.use('/api/products', BikesRouter) //    /api/products
-app.use('/api/orders', OrderRouter)
+app.use('/api/blogs', blogRouter) //    /api/products
+// app.use('/', OrderRouter)
 // app.use('/')
 
 app.get('/', (req :Request , res:Response)=>{
