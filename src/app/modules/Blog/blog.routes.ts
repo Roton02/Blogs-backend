@@ -3,6 +3,6 @@ import { blogControllers } from './blog.controller'
 
 const blogRouter = Router()
 
-blogRouter.post('/api/blogs', blogControllers.createBlog)
+blogRouter.post('/', blogControllers.createBlog)
 
 export default blogRouter

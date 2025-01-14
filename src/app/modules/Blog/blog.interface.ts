@@ -4,7 +4,7 @@ interface IBlog {
   title: string
   content: string
   author: Types.ObjectId
-  isPublished: boolean
+  isPublished?: boolean
 }
 
 export default IBlog

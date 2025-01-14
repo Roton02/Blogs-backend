@@ -8,9 +8,11 @@ interface TResponse<T> {
 }
 
 const sendResponse = <T>(res: Response, data: TResponse<T>) => {
+  console.log({data})
   res.status(data.statusCode).json({
     success: data.success,
     message: data.message,
+    statusCode: data.statusCode,
     data: data.data,
   })
 }

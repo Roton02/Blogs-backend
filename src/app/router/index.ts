@@ -1,5 +1,5 @@
 import { Router } from "express";
-import blogRouter from "../Blog/blog.routes";
+import blogRouter from "../modules/Blog/blog.routes";
 
 
 const router = Router();
@@ -7,7 +7,7 @@ const router = Router();
 
 const routers = [
     {
-        path : '/api/blogs',
+        path : '/blogs',
         router : blogRouter
     }
 ]
