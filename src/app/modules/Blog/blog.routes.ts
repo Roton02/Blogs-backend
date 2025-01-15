@@ -4,6 +4,12 @@ import { BlogValidation } from './blog.validation'
 import zodValidator from '../../middleware/validator'
 
 const blogRouter = Router()
+blogRouter.patch(
+  '/:id',
+  zodValidator(BlogValidation.blogUpdateValidation),
+  blogControllers.updateBlog
+)
+blogRouter.delete('/:id', blogControllers.deleteBlog)
 
 blogRouter.post(
   '/',
@@ -11,4 +17,7 @@ blogRouter.post(
   blogControllers.createBlog
 )
 
+blogRouter.get('/', blogControllers.getAllBlog)
+
 export default blogRouter
+///api/blogs/:id
