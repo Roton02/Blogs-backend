@@ -1,8 +1,14 @@
 import { Router } from 'express'
 import { blogControllers } from './blog.controller'
+import { BlogValidation } from './blog.validation'
+import zodValidator from '../../middleware/validator'
 
 const blogRouter = Router()
 
-blogRouter.post('/', blogControllers.createBlog)
+blogRouter.post(
+  '/',
+  zodValidator(BlogValidation.blogCreateValidation),
+  blogControllers.createBlog
+)
 
 export default blogRouter
