@@ -6,21 +6,51 @@ const createBlogIntroDB = async (payload: IBlog) => {
   return result
 }
 const updateBlogIntroDB = async (id: string, payload: Partial<IBlog>) => {
-  const result = await blog.findByIdAndUpdate(id, payload)
+  const result = await blog.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  })
   return result
 }
 const deleteBlogIntroDB = async (id: string) => {
   const result = await blog.findByIdAndDelete(id)
   return result
 }
-const getAllBlogIntroDB = async () => {
-  const result = await blog.find()
-  return result
+const getAllBlogIntroDB = async (query: Record<string, unknown>) => {
+  const searchAbleFields = ['title', 'content']
+  let searchTerm = ''
+  if (query.search) {
+    searchTerm = query.search as string
+  }
+  const searchQuery = blog.find({
+    $or: searchAbleFields.map((search) => ({
+      [search]: { $regex: searchTerm, $options: 'i' },
+    })),
+  })
+  let author = {}
+  if (query.filter) {
+    author = { author: query.filter }
+  }
+  // console.log(author)
+  const filterQuery = searchQuery.find(author)
+
+  let sort = '-createdAt'
+  if (query.sortBy) {
+    sort = `-${query.sortBy as string}`
+  }
+  if (query.sortBy && query.sortOrder == 'asc') {
+    sort = `${query.sortBy as string}`
+  }
+  if (query.sortBy && query.sortOrder == 'desc') {
+    sort = `-${query.sortBy as string}`
+  }
+  const sortQuery = await filterQuery.sort(sort)
+  return sortQuery
 }
 
 export const blogServices = {
   createBlogIntroDB,
   updateBlogIntroDB,
   deleteBlogIntroDB,
-  getAllBlogIntroDB
+  getAllBlogIntroDB,
 }

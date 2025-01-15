@@ -16,8 +16,9 @@ const blogSchema = new Schema<IBlog>(
     author: { type: Schema.Types.ObjectId },
     isPublished: { type: Boolean, default: true },
   },
-  {
+  { 
     timestamps: true,
+    versionKey: false,
   }
 )
 

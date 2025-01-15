@@ -35,10 +35,11 @@ const deleteBlog = catchAsync(async (req: Request, res: Response) => {
   })
 })
 const getAllBlog = catchAsync(async (req: Request, res: Response) => {
-  const result = await blogServices.getAllBlogIntroDB()
+  // console.log(req.query)
+  const result = await blogServices.getAllBlogIntroDB(req.query)
   sendResponse(res, {
     success: true,
-    message: 'Blog delete successfully',
+    message: 'Blogs retived successfully',
     statusCode: 200,
     data: result,
   })
@@ -48,5 +49,5 @@ export const blogControllers = {
   createBlog,
   updateBlog,
   deleteBlog,
-  getAllBlog
+  getAllBlog,
 }
