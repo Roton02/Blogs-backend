@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { model, Schema } from 'mongoose'
 import IUser from './user.interface'
+import bcrypt from 'bcrypt'
+import config from '../../config'
 
 const userSchema = new Schema<IUser>(
   {
@@ -10,6 +13,7 @@ const userSchema = new Schema<IUser>(
     email: {
       type: String,
       required: [true, 'Name is required'],
+      unique: true,
     },
     password: {
       type: String,
@@ -29,5 +33,10 @@ const userSchema = new Schema<IUser>(
     timestamps: true,
   }
 )
+
+userSchema.pre('save', async function (next) {
+  const salt_round = Number(config.BCRYPT_SALT)
+  this.password = await bcrypt.hash(this.password, salt_round)
+})
 
 export const user = model<IUser>('user', userSchema)
