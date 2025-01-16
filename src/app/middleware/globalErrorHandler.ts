@@ -4,6 +4,9 @@ import { NextFunction, Request, Response } from 'express'
 import { ZodError } from 'zod'
 import { TErrorSources } from '../error/Error.interface'
 import config from '../config'
+import mongoose from 'mongoose'
+import ZodErrorHandler from '../error/ZodErrorHandler'
+import mongooseErrorHandler from '../error/mongoose.ErrorHandler'
 
 const globalErrorHandler = (
   err: any,
@@ -11,32 +14,20 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  let statusCode = err.statusCode
+  let statusCode = err.statusCode || 500
   let message = err.message || 'something went wrong'
 
   let ErrorSources: TErrorSources = [
     { path: '', message: 'something went wrong' },
   ]
-  const ZodErrorHandler = (err: ZodError) => {
-    const statusCode = 400
-    const message = 'Validation Error '
-
-    const ErrorSources: TErrorSources = err.issues.map((issue) => {
-      return {
-        path: issue?.path[issue.path.length - 1],
-        message: issue.message,
-      }
-    })
-
-    return {
-      statusCode,
-      message,
-      ErrorSources,
-    }
-  }
-
   if (err instanceof ZodError) {
     const simplifiedError = ZodErrorHandler(err)
+    statusCode = simplifiedError.statusCode
+    message = simplifiedError.message
+    ErrorSources = simplifiedError.ErrorSources
+  }
+  if (err instanceof mongoose.Error.ValidationError) {
+    const simplifiedError = mongooseErrorHandler(err)
     statusCode = simplifiedError.statusCode
     message = simplifiedError.message
     ErrorSources = simplifiedError.ErrorSources
