@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import express, { Application } from 'express'
 import cors from 'cors'
 import router from './app/router'
