@@ -34,6 +34,7 @@ const userSchema = new Schema<IUser>(
   }
 )
 
+
 userSchema.pre('save', async function (next) {
   const salt_round = Number(config.BCRYPT_SALT)
   this.password = await bcrypt.hash(this.password, salt_round)

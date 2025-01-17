@@ -8,7 +8,7 @@ interface IUser {
 
 export default IUser
 
-export interface loginUser {
+export interface IloginUser {
   email: string
   password: string
 }
