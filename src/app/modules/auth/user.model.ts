@@ -39,4 +39,9 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt_round)
 })
 
+userSchema.post('save', async function (doc, next) {
+  doc.password = ''
+  next()
+})
+
 export const user = model<IUser>('user', userSchema)
