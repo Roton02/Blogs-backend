@@ -5,8 +5,9 @@ import { blogServices } from './blog.services'
 import sendResponse from '../../utils/sendResponse'
 
 const createBlog = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization as string
   const blogData = req.body
-  const result = await blogServices.createBlogIntroDB(blogData)
+  const result = await blogServices.createBlogIntroDB(blogData , token)
   sendResponse(res, {
     success: true,
     message: 'Blog created successfully',

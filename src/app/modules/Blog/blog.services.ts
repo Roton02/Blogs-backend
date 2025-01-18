@@ -6,15 +6,22 @@ import IBlog from './blog.interface'
 import { blog } from './blog.model'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
-const createBlogIntroDB = async (payload: IBlog) => {
-  const User = await user.findOne({ _id: payload.author })
+const createBlogIntroDB = async (payload: IBlog, token: string) => {
+  const decodeUser = jwt.verify(
+    token,
+    config.JWT_SECRET as string
+  ) as JwtPayload
+
+  const User = await user.findOne({ email: decodeUser?.email })
   if (!User) {
     throw new AppError(400, 'Author not found')
   }
+  // console.log(User);
+  payload.author = User._id
   // Create the blog
   const createdBlog = await blog.create(payload)
 
-  // Populate the 'author' field in the created blog
+  // // Populate the 'author' field in the created blog
   const populatedBlog = await blog.findById(createdBlog._id).populate('author')
 
   return populatedBlog
@@ -28,7 +35,7 @@ const updateBlogIntroDB = async (
     .findOne({ _id: id })
     .populate<{ author: IUser }>('author')
   if (!Author) {
-    throw new AppError(404, 'Author not found')
+    throw new AppError(404, 'Blog not found')
   }
   const { email } = Author.author
 
@@ -40,13 +47,13 @@ const updateBlogIntroDB = async (
   // if (verifyAuthor.email != Author.author.email) {//-
   if (verifyAuthor.email !== email) {
     //+
-    throw new AppError(401, 'this is not your blog')
+    throw new AppError(401, 'Unauthorized, please try again and Update your Own blogs')
   }
 
   const result = await blog.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
-  })
+  }).populate('author')
   return result
 }
 const deleteBlogIntroDB = async (id: string, token: string) => {
@@ -54,7 +61,7 @@ const deleteBlogIntroDB = async (id: string, token: string) => {
     .findOne({ _id: id })
     .populate<{ author: IUser }>('author')
   if (!Author) {
-    throw new AppError(404, 'Author not found')
+    throw new AppError(404, 'Blog not found')
   }
   const { email } = Author.author
   const verifyAuthor = jwt.verify(
@@ -62,7 +69,7 @@ const deleteBlogIntroDB = async (id: string, token: string) => {
     config.JWT_SECRET as string
   ) as JwtPayload
   if (verifyAuthor.email !== email) {
-    throw new AppError(401, 'this is not your blog')
+    throw new AppError(401, 'Unauthorized , please try again and delete your Own blogs')
   }
   const result = await blog.findByIdAndDelete(id)
   return result
@@ -95,7 +102,7 @@ const getAllBlogIntroDB = async (query: Record<string, unknown>) => {
   if (query.sortBy && query.sortOrder == 'desc') {
     sort = `-${query.sortBy as string}`
   }
-  const sortQuery = await filterQuery.sort(sort).populate('author');
+  const sortQuery = await filterQuery.sort(sort).populate('author')
   return sortQuery
 }
 

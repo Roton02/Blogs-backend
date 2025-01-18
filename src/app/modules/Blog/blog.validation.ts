@@ -12,9 +12,7 @@ const blogCreateValidation = z.object({
       required_error: 'content is required',
     })
     .trim(),
-  author: z.string({
-    required_error: 'author is required',
-  }),
+  author: z.string().optional(),
   isPublished: z.boolean().optional(),
 })
 const blogUpdateValidation = z.object({
@@ -29,9 +27,7 @@ const blogUpdateValidation = z.object({
       required_error: 'content is required',
     })
     .trim().optional(),
-  author: z.string({
-    required_error: 'author is required',
-  }).optional(),
+  author: z.string().optional(),
   isPublished: z.boolean().optional(),
 })
 

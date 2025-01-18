@@ -20,7 +20,7 @@ const loginUserIntroDB = async (payload: IloginUser) => {
     .findOne({ email: payload.email })
     .select('+password')
   if (!UserData) {
-    throw new AppError(404, 'Invalid credentials')
+    throw new AppError(401, 'Invalid credentials')
   }
   // console.log(UserData)
   const verifyPassword = await bcrypt.compare(
@@ -29,7 +29,7 @@ const loginUserIntroDB = async (payload: IloginUser) => {
   )
 
   if (!verifyPassword) {
-    throw new AppError(404, 'Invalid credentials')
+    throw new AppError(401, 'Invalid credentials')
   }
 
   const VerifiedUser = {
@@ -52,6 +52,7 @@ const blockUsersIntroDB = async (id: string) => {
 }
 
 const deleteBlogByAdminIntroDB = async (id: string) => {
+  console.log("hit deleteBlogByAdminIntroDB");
   const result = await blog.findByIdAndDelete(id)
   return result
 }
@@ -62,3 +63,7 @@ export const userServcies = {
   blockUsersIntroDB,
   deleteBlogByAdminIntroDB,
 }
+
+
+
+
