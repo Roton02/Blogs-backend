@@ -14,11 +14,12 @@ const auth = (requiredRole: string) => {
     const decode = jwt.verify(token, config.JWT_SECRET as string)
     const { email, role } = decode as JwtPayload
     const User = await user.findOne({ email })
-    if (User) {
+    console.log({User});
+    if (!User) {
       throw new AppError(400, 'User not found')
     }
     if (requiredRole !== role) {
-      throw new AppError(401, 'Unauthorized')
+      throw new AppError(401, 'Role Unauthorized')
     }
     req.user = decode as JwtPayload
 
