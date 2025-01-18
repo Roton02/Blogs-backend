@@ -5,7 +5,7 @@ import config from '../config'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { user } from '../modules/auth/user.model'
 
-const auth = (requiredRole: string) => {
+const auth = (...requiredRole: string[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization
     if (!token) {
@@ -18,7 +18,7 @@ const auth = (requiredRole: string) => {
     if (!User) {
       throw new AppError(400, 'User not found')
     }
-    if (requiredRole !== role) {
+    if (requiredRole && !requiredRole.includes(role)) {
       throw new AppError(401, 'Role Unauthorized')
     }
     req.user = decode as JwtPayload

@@ -7,10 +7,11 @@ import auth from '../../middleware/auth'
 const blogRouter = Router()
 blogRouter.patch(
   '/:id',
+  auth('user'),
   zodValidator(BlogValidation.blogUpdateValidation),
   blogControllers.updateBlog
 )
-blogRouter.delete('/:id', blogControllers.deleteBlog)
+blogRouter.delete('/:id', auth('user', 'admin'), blogControllers.deleteBlog)
 
 blogRouter.post(
   '/',

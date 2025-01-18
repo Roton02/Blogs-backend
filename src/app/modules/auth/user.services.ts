@@ -39,7 +39,15 @@ const loginUserIntroDB = async (payload: IloginUser) => {
   return { token }
 }
 
+const blockUsersIntroDB = async (id: string) => {
+  const result = await user.findByIdAndUpdate(id, {
+    isBlocked: true,
+  })
+  return result
+}
+
 export const userServcies = {
   createUserIntroDB,
   loginUserIntroDB,
+  blockUsersIntroDB,
 }

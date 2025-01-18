@@ -24,8 +24,19 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const blockUser = catchAsync(async (req: Request, res: Response) => {
+  const payload = req.params.userId
+  const result = await userServcies.blockUsersIntroDB(payload)
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Block user successful',
+    data: result,
+  })
+})
 
 export const userControlloer = {
   createUser,
   loginUser,
+  blockUser
 }

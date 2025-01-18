@@ -10,7 +10,7 @@ const routers = [
     router: blogRouter,
   },
   {
-    path: '/auth',
+    path: '/',
     router: userRouter,
   },
 ]
