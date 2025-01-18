@@ -3,7 +3,7 @@ import { TErrorSources } from './Error.interface'
 
 const ZodErrorHandler = (err: ZodError) => {
   const statusCode = 400
-  const message = 'Validation Error '
+  const message = 'Validation error'
 
   const ErrorSources: TErrorSources = err.issues.map((issue) => {
     return {

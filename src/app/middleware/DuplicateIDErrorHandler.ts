@@ -19,7 +19,7 @@ const DuplicateIDErrorHandler = (err: any) => {
   return {
     statusCode,
     success: false,
-    message: 'Already exists',
+    message: 'Validation error',
     errorSources,
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from 'express'
 import catchAsync from '../../utils/catchAsync'
 import { userServcies } from './user.services'
@@ -7,9 +8,9 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body
   const result = await userServcies.createUserIntroDB(payload)
   sendResponse(res, {
-    statusCode: 400,
+    statusCode: 201,
     success: true,
-    message: 'User created successfully',
+    message: 'User registered successfully',
     data: result,
   })
 })
@@ -31,7 +32,6 @@ const blockUser = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: 'User blocked successfully',
-    data: result,
   })
 })
 
@@ -40,9 +40,8 @@ const deleteBlogByAdmin = catchAsync(async (req: Request, res: Response) => {
   const result = await userServcies.deleteBlogByAdminIntroDB(id)
   sendResponse(res, {
     success: true,
-    message: 'Blog delete successfully',
+    message: 'Blog deleted successfully',
     statusCode: 200,
-    data: result,
   })
 })
 

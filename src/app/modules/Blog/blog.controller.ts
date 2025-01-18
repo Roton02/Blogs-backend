@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from 'express'
 import catchAsync from '../../utils/catchAsync'
 import { blogServices } from './blog.services'
@@ -9,7 +10,7 @@ const createBlog = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     success: true,
     message: 'Blog created successfully',
-    statusCode: 200,
+    statusCode: 201,
     data: result,
   })
 })
@@ -31,9 +32,8 @@ const deleteBlog = catchAsync(async (req: Request, res: Response) => {
   const result = await blogServices.deleteBlogIntroDB(id, token)
   sendResponse(res, {
     success: true,
-    message: 'Blog delete successfully',
+    message: 'Blog deleted successfully',
     statusCode: 200,
-    data: result,
   })
 })
 const getAllBlog = catchAsync(async (req: Request, res: Response) => {
@@ -41,7 +41,7 @@ const getAllBlog = catchAsync(async (req: Request, res: Response) => {
   const result = await blogServices.getAllBlogIntroDB(req.query)
   sendResponse(res, {
     success: true,
-    message: 'Blogs retived successfully',
+    message: 'Blogs fetched successfully',
     statusCode: 200,
     data: result,
   })
