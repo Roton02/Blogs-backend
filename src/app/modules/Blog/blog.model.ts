@@ -13,10 +13,10 @@ const blogSchema = new Schema<IBlog>(
       required: [true, 'blog content is required'],
       trim: true,
     },
-    author: { type: Schema.Types.ObjectId },
+    author: { type: Schema.Types.ObjectId, ref: 'user' },
     isPublished: { type: Boolean, default: true },
   },
-  { 
+  {
     timestamps: true,
     versionKey: false,
   }

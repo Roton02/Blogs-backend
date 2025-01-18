@@ -1,7 +1,13 @@
+import AppError from '../../error/AppError'
+import { user } from '../auth/user.model'
 import IBlog from './blog.interface'
 import { blog } from './blog.model'
 
 const createBlogIntroDB = async (payload: IBlog) => {
+  const User = await user.findOne({ _id: payload.author })
+  if (!User) {
+    throw new AppError(400, 'Author not found')
+  }
   const result = await blog.create(payload)
   return result
 }
