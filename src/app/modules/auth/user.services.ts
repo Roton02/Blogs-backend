@@ -36,7 +36,7 @@ const loginUserIntroDB = async (payload: IloginUser) => {
 
   const token = jwt.sign(VerifiedUser, secret, { expiresIn: '1h' })
 
-  return {token}
+  return { token }
 }
 
 export const userServcies = {
