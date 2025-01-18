@@ -14,9 +14,10 @@ const createBlog = catchAsync(async (req: Request, res: Response) => {
   })
 })
 const updateBlog = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization as string
   const id = req.params.id
   const blogData = req.body
-  const result = await blogServices.updateBlogIntroDB(id, blogData)
+  const result = await blogServices.updateBlogIntroDB(id, blogData, token)
   sendResponse(res, {
     success: true,
     message: 'Blog updated successfully',
@@ -25,8 +26,9 @@ const updateBlog = catchAsync(async (req: Request, res: Response) => {
   })
 })
 const deleteBlog = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization as string
   const id = req.params.id
-  const result = await blogServices.deleteBlogIntroDB(id)
+  const result = await blogServices.deleteBlogIntroDB(id, token)
   sendResponse(res, {
     success: true,
     message: 'Blog delete successfully',

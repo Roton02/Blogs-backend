@@ -21,6 +21,11 @@ userRouter.patch(
   auth('admin'),
   userControlloer.blockUser
 )
+userRouter.delete(
+  '/admin/blogs/:id',
+  auth('admin'),
+  userControlloer.blockUser
+)
 
 // /api/admin/users/:userId/block
 
