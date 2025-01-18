@@ -1,13 +1,14 @@
 import config from '../../config'
 import AppError from '../../error/AppError'
+import { blog } from '../Blog/blog.model'
 import IUser, { IloginUser } from './user.interface'
 import { user } from './user.model'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 const createUserIntroDB = async (payload: IUser) => {
-  const isExist = await user.findOne({email: payload.email})
-  if(isExist){
+  const isExist = await user.findOne({ email: payload.email })
+  if (isExist) {
     throw new AppError(400, 'Email already exists')
   }
   const result = await user.create(payload)
@@ -50,8 +51,14 @@ const blockUsersIntroDB = async (id: string) => {
   return result
 }
 
+const deleteBlogByAdminIntroDB = async (id: string) => {
+  const result = await blog.findByIdAndDelete(id)
+  return result
+}
+
 export const userServcies = {
   createUserIntroDB,
   loginUserIntroDB,
   blockUsersIntroDB,
+  deleteBlogByAdminIntroDB,
 }

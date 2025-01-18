@@ -35,8 +35,20 @@ const blockUser = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const deleteBlogByAdmin = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id
+  const result = await userServcies.deleteBlogByAdminIntroDB(id)
+  sendResponse(res, {
+    success: true,
+    message: 'Blog delete successfully',
+    statusCode: 200,
+    data: result,
+  })
+})
+
 export const userControlloer = {
   createUser,
   loginUser,
-  blockUser
+  blockUser,
+  deleteBlogByAdmin
 }
