@@ -7,6 +7,8 @@ import config from '../config'
 import mongoose from 'mongoose'
 import ZodErrorHandler from '../error/ZodErrorHandler'
 import mongooseErrorHandler from '../error/mongoose.ErrorHandler'
+import AppError from '../error/AppError'
+import DuplicateIDErrorHandler from './DuplicateIDErrorHandler'
 
 const globalErrorHandler = (
   err: any,
@@ -25,12 +27,21 @@ const globalErrorHandler = (
     statusCode = simplifiedError.statusCode
     message = simplifiedError.message
     ErrorSources = simplifiedError.ErrorSources
-  }
-  if (err instanceof mongoose.Error.ValidationError) {
+  } else if (err instanceof mongoose.Error.ValidationError) {
     const simplifiedError = mongooseErrorHandler(err)
     statusCode = simplifiedError.statusCode
     message = simplifiedError.message
     ErrorSources = simplifiedError.ErrorSources
+  } else if (err instanceof AppError) {
+    const simplifiedError = DuplicateIDErrorHandler(err)
+    statusCode = err.statusCode
+    message = err.message
+    ErrorSources = [
+      {
+        path: '',
+        message: err.message,
+      },
+    ]
   }
 
   res.status(statusCode).json({

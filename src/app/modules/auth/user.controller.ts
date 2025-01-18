@@ -30,7 +30,7 @@ const blockUser = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Block user successful',
+    message: 'User blocked successfully',
     data: result,
   })
 })

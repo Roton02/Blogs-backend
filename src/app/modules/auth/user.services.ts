@@ -6,6 +6,10 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 const createUserIntroDB = async (payload: IUser) => {
+  const isExist = await user.findOne({email: payload.email})
+  if(isExist){
+    throw new AppError(400, 'Email already exists')
+  }
   const result = await user.create(payload)
   return result
 }
