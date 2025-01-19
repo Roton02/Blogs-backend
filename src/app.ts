@@ -10,8 +10,8 @@ app.use(express.json())
 app.use(cors())
 app.use('/api', router)
 
-app.use('/', (req:Request, res:Response) => {
-    res.send('Hello World!')
+app.use('/', (req: Request, res: Response) => {
+  res.send('Hello World!')
 })
 
 app.use(globalErrorHandler)

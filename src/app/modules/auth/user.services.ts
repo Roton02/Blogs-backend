@@ -52,7 +52,7 @@ const blockUsersIntroDB = async (id: string) => {
 }
 
 const deleteBlogByAdminIntroDB = async (id: string) => {
-  console.log("hit deleteBlogByAdminIntroDB");
+  console.log('hit deleteBlogByAdminIntroDB')
   const result = await blog.findByIdAndDelete(id)
   return result
 }
@@ -63,7 +63,3 @@ export const userServcies = {
   blockUsersIntroDB,
   deleteBlogByAdminIntroDB,
 }
-
-
-
-

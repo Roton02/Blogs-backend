@@ -21,17 +21,19 @@ const blogUpdateValidation = z.object({
       required_error: 'title is required',
       invalid_type_error: 'title must be a string',
     })
-    .trim().optional(),
+    .trim()
+    .optional(),
   content: z
     .string({
       required_error: 'content is required',
     })
-    .trim().optional(),
+    .trim()
+    .optional(),
   author: z.string().optional(),
   isPublished: z.boolean().optional(),
 })
 
 export const BlogValidation = {
   blogCreateValidation,
-  blogUpdateValidation
+  blogUpdateValidation,
 }

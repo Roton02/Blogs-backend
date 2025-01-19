@@ -6,7 +6,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import { user } from '../modules/auth/user.model'
 
 const auth = (...requiredRole: string[]) => {
-  console.log('objectaaaaaaaaa');
+  console.log('objectaaaaaaaaa')
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization
     if (!token) {

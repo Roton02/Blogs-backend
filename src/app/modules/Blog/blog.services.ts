@@ -47,13 +47,18 @@ const updateBlogIntroDB = async (
   // if (verifyAuthor.email != Author.author.email) {//-
   if (verifyAuthor.email !== email) {
     //+
-    throw new AppError(401, 'Unauthorized, please try again and Update your Own blogs')
+    throw new AppError(
+      401,
+      'Unauthorized, please try again and Update your Own blogs'
+    )
   }
 
-  const result = await blog.findByIdAndUpdate(id, payload, {
-    new: true,
-    runValidators: true,
-  }).populate('author')
+  const result = await blog
+    .findByIdAndUpdate(id, payload, {
+      new: true,
+      runValidators: true,
+    })
+    .populate('author')
   return result
 }
 const deleteBlogIntroDB = async (id: string, token: string) => {
@@ -69,7 +74,10 @@ const deleteBlogIntroDB = async (id: string, token: string) => {
     config.JWT_SECRET as string
   ) as JwtPayload
   if (verifyAuthor.email !== email) {
-    throw new AppError(401, 'Unauthorized , please try again and delete your Own blogs')
+    throw new AppError(
+      401,
+      'Unauthorized , please try again and delete your Own blogs'
+    )
   }
   const result = await blog.findByIdAndDelete(id)
   return result
