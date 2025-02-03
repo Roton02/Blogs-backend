@@ -5,7 +5,8 @@ import { blogServices } from './blog.services'
 import sendResponse from '../../utils/sendResponse'
 
 const createBlog = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization as string
+  const extractedToken = req.headers.authorization
+  const token = (extractedToken as string).split(' ')[1]
   const blogData = req.body
   const result = await blogServices.createBlogIntroDB(blogData, token)
   sendResponse(res, {
@@ -16,7 +17,8 @@ const createBlog = catchAsync(async (req: Request, res: Response) => {
   })
 })
 const updateBlog = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization as string
+  const extractedToken = req.headers.authorization
+  const token = (extractedToken as string).split(' ')[1]
   const id = req.params.id
   const blogData = req.body
   const result = await blogServices.updateBlogIntroDB(id, blogData, token)
@@ -28,7 +30,8 @@ const updateBlog = catchAsync(async (req: Request, res: Response) => {
   })
 })
 const deleteBlog = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization as string
+  const extractedToken = req.headers.authorization
+  const token = (extractedToken as string).split(' ')[1]
   const id = req.params.id
   const result = await blogServices.deleteBlogIntroDB(id, token)
   sendResponse(res, {

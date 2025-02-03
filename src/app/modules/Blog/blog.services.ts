@@ -7,12 +7,11 @@ import { blog } from './blog.model'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
 const createBlogIntroDB = async (payload: IBlog, token: string) => {
-  const decodeUser = jwt.verify(
+  const decodeUser =  jwt.verify(
     token,
     config.JWT_SECRET as string
   ) as JwtPayload
-
-  const User = await user.findOne({ email: decodeUser?.email })
+  const User = await user.findOne({ email: decodeUser.email })
   if (!User) {
     throw new AppError(400, 'Author not found')
   }
@@ -94,10 +93,11 @@ const getAllBlogIntroDB = async (query: Record<string, unknown>) => {
     })),
   })
   let author = {}
+  // console.log(query.filter)
   if (query.filter) {
     author = { author: query.filter }
   }
-  // console.log(author)
+  // console.log({ author })
   const filterQuery = searchQuery.find(author)
 
   let sort = '-createdAt'
@@ -111,6 +111,7 @@ const getAllBlogIntroDB = async (query: Record<string, unknown>) => {
     sort = `-${query.sortBy as string}`
   }
   const sortQuery = await filterQuery.sort(sort).populate('author')
+  // console.log(sortQuery)
   return sortQuery
 }
 

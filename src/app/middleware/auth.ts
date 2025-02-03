@@ -6,24 +6,37 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import { user } from '../modules/auth/user.model'
 
 const auth = (...requiredRole: string[]) => {
-  console.log('objectaaaaaaaaa')
+  // console.log('auth middleware triggered ')
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization
-    if (!token) {
-      throw new AppError(400, 'You are not authorized')
-    }
-    const decode = jwt.verify(token, config.JWT_SECRET as string)
-    const { email, role } = decode as JwtPayload
-    const User = await user.findOne({ email })
-    // console.log({User});
-    if (!User) {
-      throw new AppError(400, 'User not found')
-    }
-    if (requiredRole && !requiredRole.includes(role)) {
-      throw new AppError(401, ' Unauthorized  to access')
-    }
-    req.user = decode as JwtPayload
+    // console.log('auth middleware inside ')
+    const extractedToken = req.headers.authorization
+    const token = (extractedToken as string).split(' ')[1]
 
+    if (!token) {
+      throw new AppError(400, 'You are not authorized to access')
+    }
+    // check if the token is valid
+    const decoded = jwt.verify(token, config.JWT_SECRET as string) as JwtPayload
+    const { email, role } = decoded
+
+    const userData = await user.findOne({ email: email })
+    // check user already exit
+    if (!userData) {
+      throw new AppError(404, 'User is not found')
+    }
+
+    // check if the user is blocked
+    const Status = userData?.isBlocked
+    if (Status) {
+      throw new AppError(400, 'The user is blocked ')
+    }
+
+    // role base Authorized
+    if (requiredRole && !requiredRole.includes(role)) {
+      throw new AppError(400, 'Unauthorized  to access !')
+    }
+
+    req.user = decoded as JwtPayload
     next()
   })
 }

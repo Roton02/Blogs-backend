@@ -36,7 +36,6 @@ const blockUser = catchAsync(async (req: Request, res: Response) => {
 })
 
 const deleteBlogByAdmin = catchAsync(async (req: Request, res: Response) => {
-  console.log('asasasa')
   const id = req.params.id
   const result = await userServcies.deleteBlogByAdminIntroDB(id)
   sendResponse(res, {
